@@ -9,16 +9,16 @@ use Symfony\Component\HttpFoundation\Response;
 class HomeController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
+     * @Route("/", name="app_inicio")
      */
     public function homepage()
     {
-        return $this->render('home/index.html.twig', [
+        return $this->render('inicio/inicio.html.twig', [
             'controller_name' => 'HomeController',
         ]);
     }
     /**
-     * @Route("/estudiante/{variable}", name="estudiante")
+     * @Route("/estudiante/{variable}", name="app_estudiante")
      */
     public function estudiante($variable){
            /* return new Response(sprintf(
@@ -35,8 +35,8 @@ class HomeController extends AbstractController
         		'U999876',
         		'U999879'
         ];
-       
-        return $this->render('home/show.html.twig',[
+
+        return $this->render('estudiante/show.html.twig',[
  			'titulo' => ucwords(str_replace('-', ' ', $variable)),
  			'contenido' => ucwords(str_replace('-', ' ', 'Está es una prueba symfony')),
  			'comentarios' =>  $comentarios,
@@ -46,7 +46,7 @@ class HomeController extends AbstractController
     }
 
      /**
-     * @Route("/contacto/", name="contacto")
+     * @Route("/contacto/", name="app_contacto")
      */
     public function contacto(){
     	return $this->render('contacto/contacto.html.twig', [
