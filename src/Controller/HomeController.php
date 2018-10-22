@@ -34,7 +34,15 @@ class HomeController extends AbstractController
         		'U991234',
         		'U995678',
         		'U999876',
-        		'U999879'
+        		'U999879',
+        		'U999867',
+        		'U999868',
+        		'U999869',
+        		'U9998670',
+        		'U9998671',
+        		'U9998672',
+        		'U9998673',
+        		'U9998674',
         ];
 
         return $this->render('estudiante/show.html.twig',[
