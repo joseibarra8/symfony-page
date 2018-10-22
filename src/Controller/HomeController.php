@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class HomeController extends AbstractController
@@ -40,7 +41,8 @@ class HomeController extends AbstractController
  			'titulo' => ucwords(str_replace('-', ' ', $variable)),
  			'contenido' => ucwords(str_replace('-', ' ', 'Está es una prueba symfony')),
  			'comentarios' =>  $comentarios,
- 			'matriculas' => $matriculas
+ 			'matriculas' => $matriculas,
+ 			'variable' => $variable
         ]);
 
     }
@@ -52,6 +54,15 @@ class HomeController extends AbstractController
     	return $this->render('contacto/contacto.html.twig', [
             'controller_name' => 'HomeController',
         ]);
+    }
+
+    /**
+    * @Route("/estudiante/{variable}/heart",name="article_toggle_heart",methods={"POST"})
+    */
+    public function toggleArticleHeart($variable){
+    	// TODO - actually heart/unheart the article!
+
+    	return new JsonResponse(['corazon' => rand(5,100)]);
     }
 
   
