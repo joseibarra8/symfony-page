@@ -6,8 +6,16 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        #l3_firewall:
+            #pattern: ^/
+            #security: true
+            #cas: true # Activation du CAS
         main:
             anonymous: true
+            #anonymous: ~
+            #pattern: ^/
+            #security: true
+            #cas: true # Activation du CAS
 
             # activate different ways to authenticate
 

@@ -1,0 +1,9 @@
+l3_cas:
+    host:                 'www.ula.edu.mx'
+    path:                 'ncas'
+    port:                 443
+    ca:                   null
+    handleLogoutRequest:  false
+    casLogoutTarget:      null
+    force:                true
+    gateway:              true
