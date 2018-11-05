@@ -14,16 +14,24 @@ use App\Service\MarkdownHelper;
 use App\Service\SumaClass;
 use Nexy\Slack\Client;
 
+use App\Repository\ArticleRepository; //PARA OBTENER CONSULTAS PERSONALIZADAS PASANDO PARAMETRO
+
 
 class HomeController extends AbstractController
 {
     /**
      * @Route("/", name="app_inicio")
      */
-    public function homepage()
+    public function homepage(ArticleRepository $repositorio)
     {
+    	$articles = $repositorio->findAllPublishedOrderedByNewest();// slug es el campo en la BD y $variable el valor pasado
+    	if (!$articles) {
+            throw $this->createNotFoundException('No se encontraron articulos');
+        }
+
         return $this->render('inicio/inicio.html.twig', [
             'controller_name' => 'HomeController',
+            'articles' => $articles,
         ]);
     }
     /**
@@ -34,7 +42,7 @@ class HomeController extends AbstractController
             	"Portal del estudiante: %s", $variable
             ));*/
       
-        $variable ='why-asteroids-taste-like-bacon-895';
+        //$variable ='why-asteroids-taste-like-bacon-895';
         if ($variable === 'khaaaaaan') {
         	$message = $slack->createMessage()
                 ->from('Khan')
@@ -46,7 +54,7 @@ class HomeController extends AbstractController
          /** @var Article $article */
         $article = $repository->findBy(['slug' => $variable]);// slug es el campo en la BD y $variable el valor pasado
          if (!$article) {
-            throw $this->createNotFoundException(sprintf('No article for slug "%s"', $variable));
+            throw $this->createNotFoundException(sprintf('No hay articulos para el campo slug "%s"', $variable));
         }
         //dump($article);die;
 
