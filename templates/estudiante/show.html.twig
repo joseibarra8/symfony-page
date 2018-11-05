@@ -60,7 +60,7 @@
                                 <tr>
                                     <td>{{ articulo.id }}<br></td>
                                     <td>{{ articulo.title }}<br></td>
-                                    <td>{{ articulo.publishedAt ? articulo.publishedAt|date('Y-m-d') : 'unpublished' }}<br></td>
+                                    <td>{{ articulo.publishedAt ? articulo.publishedAt|ago : 'unpublished' }}<br></td>
                                     <td>{{ articulo.content|cached_markdown }}<br></td>
                                 </tr>
                                 {% endfor %}
