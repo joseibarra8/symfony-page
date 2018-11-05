@@ -18,4 +18,5 @@ return [
     Http\HttplugBundle\HttplugBundle::class => ['all' => true],
     Nexy\SlackBundle\NexySlackBundle::class => ['all' => true],
     L3\Bundle\CasBundle\L3CasBundle::class => ['all' => true],
+    Knp\Bundle\TimeBundle\KnpTimeBundle::class => ['all' => true],
 ];

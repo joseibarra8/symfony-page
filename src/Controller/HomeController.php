@@ -7,6 +7,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Psr\Log\LoggerInterface;
+use Doctrine\ORM\EntityManagerInterface;//Permite guardar y recuperar datos de la base de datos
+use App\Entity\Article;//class de la tabla
 
 use App\Service\MarkdownHelper;
 use App\Service\SumaClass;
@@ -27,12 +29,12 @@ class HomeController extends AbstractController
     /**
      * @Route("/estudiante/{variable}", name="app_estudiante")
      */
-    public function estudiante($variable, MarkdownHelper $miclase, SumaClass $sumar, Client $slack){
+    public function estudiante($variable, MarkdownHelper $miclase, SumaClass $sumar, Client $slack, EntityManagerInterface $recuperadatosDB){
            /* return new Response(sprintf(
             	"Portal del estudiante: %s", $variable
             ));*/
       
-   
+        $variable ='why-asteroids-taste-like-bacon-895';
         if ($variable === 'khaaaaaan') {
         	$message = $slack->createMessage()
                 ->from('Khan')
@@ -40,6 +42,13 @@ class HomeController extends AbstractController
                 ->setText('Ah, Kirk, my old friend...');
             $slack->sendMessage($message);
         }
+        $repository = $recuperadatosDB->getRepository(Article::class);
+         /** @var Article $article */
+        $article = $repository->findBy(['slug' => $variable]);// slug es el campo en la BD y $variable el valor pasado
+         if (!$article) {
+            throw $this->createNotFoundException(sprintf('No article for slug "%s"', $variable));
+        }
+        //dump($article);die;
 
         $comentarios = [
                 'comentario1',
@@ -128,6 +137,7 @@ EOF;
  			'matriculas' => $matriculas,
  			'variable' => $variable,
  			'articleContent' => $articleContent,
+ 			'articles'=>$article,
         ]);
 
     }

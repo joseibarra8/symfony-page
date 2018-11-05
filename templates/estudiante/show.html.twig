@@ -1,6 +1,6 @@
 
 {% extends 'base.html.twig' %}
-{% block title %} {{ titulo }} {%endblock%}
+{% block title %} {#{{ articles.title }}#} {%endblock%}
 {% block body %}
 {# cometarios! #}
 
@@ -41,20 +41,29 @@
                     <div class="col-sm-12">
                         <img class="show-article-img" src="{{ asset('images/asteroid.jpeg') }}">
                         <div class="show-article-title-container d-inline-block pl-3 align-middle">
-                            <span class="show-article-title ">{{ titulo }}</span>
+                            <span class="show-article-title "> {#{{ articles.title }}#}</span>
                             <br>
                             <span class="align-left article-details"><img class="article-author-img rounded-circle" src="{{ asset('images/alien-profile.png') }}"> Mike Ferengi </span>
                             <span class="pl-2 article-details"> 55 hours ago</span>
                             <span class="pl-2 article-details"> 
                                 <span class="js-like-article-count">6</span>
-                                <a href="{{ path('article_toggle_heart',{variable:variable}) }}" class="fa fa-heart-o like-article js-like-article"></a> </span>
+                                {#<a href="{{ path('article_toggle_heart',{variable:articles.slug}) }}" class="fa fa-heart-o like-article js-like-article"></a> #}</span>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="article-text">
-                            {{ articleContent|raw }}
+                            {#{{ articleContent|raw }}#}
+                            {#aqui {{ articles.content|markdown }}#}
+                            {% for articulo in articles %}
+                                <tr>
+                                    <td>{{ articulo.id }}<br></td>
+                                    <td>{{ articulo.title }}<br></td>
+                                    <td>{{ articulo.publishedAt ? articulo.publishedAt|date('Y-m-d') : 'unpublished' }}<br></td>
+                                    <td>{{ articulo.content|cached_markdown }}<br></td>
+                                </tr>
+                                {% endfor %}
                         </div>
                     </div>
                 </div>
