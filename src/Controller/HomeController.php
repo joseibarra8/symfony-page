@@ -165,7 +165,7 @@ EOF;
     /**
     * @Route("/estudiante/{variable}/heart",name="article_toggle_heart",methods={"POST"})
     */
-    public function toggleArticleHeart($variable,LoggerInterface $login, EntityManagerInterface $emanag){
+    public function toggleArticleHeart($variable,LoggerInterface $login){
     	// TODO - actually heart/unheart the article!
 
 	    $entityManager = $this->getDoctrine()->getManager();
