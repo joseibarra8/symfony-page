@@ -14,7 +14,9 @@ use App\Service\MarkdownHelper;
 use App\Service\SumaClass;
 use Nexy\Slack\Client;
 
-use App\Repository\ArticleRepository; //PARA OBTENER CONSULTAS PERSONALIZADAS PASANDO PARAMETRO
+use App\Repository\ArticleRepository; //pARA OBTENER CONSULTAS PERSONALIZADAS PASANDO
+
+use Twig\Environment;
 
 
 class HomeController extends AbstractController
@@ -22,9 +24,10 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="app_inicio")
      */
-    public function homepage(ArticleRepository $repositorio)
+    public function homepage(EntityManagerInterface $recuperadatosDB)
     {
-    	$articles = $repositorio->findAllPublishedOrderedByNewest();// slug es el campo en la BD y $variable el valor pasado
+    	$repository = $recuperadatosDB->getRepository(Article::class);
+    	$articles = $repository->findAllPublishedOrderedByNewest();// slug es el campo en la BD y $variable el valor pasado
     	if (!$articles) {
             throw $this->createNotFoundException('No se encontraron articulos');
         }
@@ -42,7 +45,7 @@ class HomeController extends AbstractController
             	"Portal del estudiante: %s", $variable
             ));*/
       
-        //$variable ='why-asteroids-taste-like-bacon-895';
+      
         if ($variable === 'khaaaaaan') {
         	$message = $slack->createMessage()
                 ->from('Khan')
@@ -52,9 +55,9 @@ class HomeController extends AbstractController
         }
         $repository = $recuperadatosDB->getRepository(Article::class);
          /** @var Article $article */
-        $article = $repository->findBy(['slug' => $variable]);// slug es el campo en la BD y $variable el valor pasado
+        $article = $repository->findOneBy(['slug' => $variable]);// slug es el campo en la BD y $variable el valor pasado
          if (!$article) {
-            throw $this->createNotFoundException(sprintf('No hay articulos para el campo slug "%s"', $variable));
+            throw $this->createNotFoundException(sprintf('No article for slug "%s"', $variable));
         }
         //dump($article);die;
 
@@ -162,12 +165,28 @@ EOF;
     /**
     * @Route("/estudiante/{variable}/heart",name="article_toggle_heart",methods={"POST"})
     */
-    public function toggleArticleHeart($variable,LoggerInterface $login){
+    public function toggleArticleHeart($variable,LoggerInterface $login, EntityManagerInterface $em){
     	// TODO - actually heart/unheart the article!
 
-		$login->info('Se ejecuta función'.$variable);
-    	return new JsonResponse(['corazon' => rand(5,100)]);
-    }
+	    $entityManager = $this->getDoctrine()->getManager();
+	    $product = $entityManager->getRepository(Article::class)->findOneBy(['slug' => $variable]);
+
+	    if (!$product) {
+	        throw $this->createNotFoundException(
+	            'No product found for id '.$variable
+	        );
+	    }
+
+	    $product->incrementHeartCount();
+	   // $product->setHeartCount($product->getHeartCount() + 1);
+	    $entityManager->flush();
+
+			$login->info('Se ejecuta función');
+	    	//return new JsonResponse(['corazon' => rand(5,100)]);
+	    	return new JsonResponse(['corazon' => $product->getHeartCount()]);
+	    }
+
+
 
   
 }
