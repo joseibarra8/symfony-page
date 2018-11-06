@@ -67,13 +67,13 @@ class HomeController extends AbstractController
                 'comentario3'
         ];
         $matriculas = [
-        		'U991234',
-        		'U995678',
-        		'U999876',
-        		'U999879',
-        		'U999867',
-        		'U999868',
-        		'U999869',
+        		'U9912347',
+        		'U9956780',
+        		'U9998760',
+        		'U9998790',
+        		'U9998670',
+        		'U9998680',
+        		'U9998690',
         		'U9998670',
         		'U9998671',
         		'U9998672',
@@ -165,7 +165,7 @@ EOF;
     /**
     * @Route("/estudiante/{variable}/heart",name="article_toggle_heart",methods={"POST"})
     */
-    public function toggleArticleHeart($variable,LoggerInterface $login, EntityManagerInterface $em){
+    public function toggleArticleHeart($variable,LoggerInterface $login, EntityManagerInterface $emanag){
     	// TODO - actually heart/unheart the article!
 
 	    $entityManager = $this->getDoctrine()->getManager();
@@ -178,7 +178,7 @@ EOF;
 	    }
 
 	    $product->incrementHeartCount();
-	   // $product->setHeartCount($product->getHeartCount() + 1);
+	    // $product->setHeartCount($product->getHeartCount() + 1);
 	    $entityManager->flush();
 
 			$login->info('Se ejecuta función');
